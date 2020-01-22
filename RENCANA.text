@@ -4,3 +4,42 @@
   - Membuat digital prototype untuk project (belum dimulai)
   - Membagi pekerjaan (back-end, front-end, database)
   - setiap pekerjaan, bagi lagi masing- masing 3 orang
+  
+ # RENCANA DATABASE
+  > tb_jurusan
+    - id_jurusan
+    - nama_jurusan
+    - id_kepala_jurusan
+    
+  > tb_kepala_jurusan
+    - id_kepala_jurusan (Nomor Induk Pegawai)
+    - nama_kepala_jurusan
+   
+  > tb_user 
+    - id_user
+    - nama_user
+    - username
+    - password
+    - jurusan_user
+    - kelas_user
+    - role_user (penentuan admin/guru/siswa)
+  
+  > tb_barang
+    - id_barang
+    - id_jurusan
+    - nama_barang
+    - jumlah_barang
+    - kondisi_barang (keadaan barang)
+    - status_barang (status apabila dipinjam atau tidak)
+    
+  > tb_peminjaman
+    - id_peminjaman
+    - id_barang
+    - id_user (untuk mengambil data user yang meminjam)
+    - tanggal_peminjaman
+    
+  > tb_pengembalian
+    - id_pengembalian
+    - id_barang
+    - id_user (untuk mengambil data user yang meminjam)
+    - tanggal_pengembalian
