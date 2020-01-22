@@ -42,4 +42,4 @@
     - id_pengembalian
     - id_barang
     - id_user (untuk mengambil data user yang meminjam)
-    - tanggal_pengembalian
+    - tanggal_pengembalian(tgl)
