@@ -26,7 +26,7 @@
   
   > tb_barang
     - id_barang
-    - id_jurusan
+    - id_jurusan (foreign key)
     - nama_barang
     - jumlah_barang
     - kondisi_barang (keadaan barang)
@@ -34,12 +34,12 @@
     
   > tb_peminjaman
     - id_peminjaman
-    - id_barang
-    - id_user (untuk mengambil data user yang meminjam)
+    - id_barang (foreign key)
+    - id_user (untuk mengambil data user yang meminjam) (foreign key)
     - tanggal_peminjaman
     
   > tb_pengembalian
     - id_pengembalian
-    - id_barang
-    - id_user (untuk mengambil data user yang meminjam)
+    - id_barang (foreign key)
+    - id_user (untuk mengambil data user yang meminjam) (foreign key)
     - tanggal_pengembalian(tgl)
