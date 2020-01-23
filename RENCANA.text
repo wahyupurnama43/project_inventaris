@@ -22,7 +22,7 @@
     - password
     - jurusan_user
     - kelas_user
-    - role_user (penentuan admin/guru/siswa)
+    - role_user (penentuan admin/user/operator) alasan dirubah karna siswa dan guru bisa berperan sebagai user
   
   > tb_barang
     - id_barang
