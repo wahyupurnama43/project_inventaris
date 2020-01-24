@@ -7,39 +7,42 @@
   
  # RENCANA DATABASE
   > tb_jurusan
-    - id_jurusan
-    - nama_jurusan
-    - id_kepala_jurusan
+    - id_jurusan (int) PRIMARY KEY
+    - nama_jurusan (varchar[100]) => ini nama lengkap kayak Rekayasa Perangkat Lunak
+    - kode_jurusan (char[5]) => ini buat kode jurusan kayak RPL, TKJ, MM
+    - id_kepala_jurusan (int)
     
   > tb_kepala_jurusan
-    - id_kepala_jurusan (Nomor Induk Pegawai)
-    - nama_kepala_jurusan
+    - id_kepala_jurusan (Nomor Induk Pegawai) (int) PRIMARY KEY
+    - nama_kepala_jurusan (varchar[100]) => nama lengkap beserta Gelar
    
   > tb_user 
-    - id_user
-    - nama_user
-    - username
-    - password
-    - jurusan_user
-    - kelas_user
+    - id_user (int) PRIMARY KEY
+    - nama_user (varchar[100]) => nama lengkap
+    - username (varchar[100])
+    - password (varchar[255])
+    - jurusan_user (varchar[10]) => relasi dengan kode_jurusan [sama]
+    - kelas_user (varchar[20]) => kelas, jurusan, index
     - role_user (penentuan admin/user/operator) alasan dirubah karna siswa dan guru bisa berperan sebagai user
   
   > tb_barang
-    - id_barang
-    - id_jurusan (foreign key)
-    - nama_barang
-    - jumlah_barang
-    - kondisi_barang (keadaan barang)
-    - status_barang (status apabila dipinjam atau tidak)
+    - id_barang (int) PRIMARY KEY
+    - id_jurusan (foreign key) => untuk mengambil data jurusan
+    - nama_barang (varchar[100])
+    - jumlah_barang (int) => untuk menunjukkan jumlah barang yang ada
+    - kondisi_barang (keadaan barang) (varchar[10]) => menandakan kondisi barang seperti baik, kurang baik
+    - status_barang (status apabila dipinjam atau tidak) 
     
   > tb_peminjaman
-    - id_peminjaman
-    - id_barang (foreign key)
+    - id_peminjaman (int) PRIMARY KEY
+    - id_barang (foreign key) 
     - id_user (untuk mengambil data user yang meminjam) (foreign key)
-    - tanggal_peminjaman
+    - tanggal_peminjaman (tgl)
     
   > tb_pengembalian
-    - id_pengembalian
+    - id_pengembalian (int) PRIMARY KEY
     - id_barang (foreign key)
     - id_user (untuk mengambil data user yang meminjam) (foreign key)
-    - tanggal_pengembalian(tgl)
+    - tanggal_pengembalian (tgl)
+    
+    # UNTUK DATABASENYA DIBUAT PAKE phpmyadmin TERUS DIEKSPORT KE DALAM FORMAT .sql
