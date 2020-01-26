@@ -1,6 +1,8 @@
 <?php
 
-class Home
+use Inventaris\Core\Controller;
+
+class Home extends Controller
 {
     public function index()
     {

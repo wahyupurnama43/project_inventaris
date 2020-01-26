@@ -26,5 +26,13 @@ spl_autoload_register(function ($classname) {
 });
 
 // instansiasi class app
-
 $app = new SystemApplication();
+
+/**
+ * 
+ * autoload file helper
+ * 
+ * dengan menggunakan method dary SystemApplication()
+ * @param String $url , url menuju path
+ * 
+ */
