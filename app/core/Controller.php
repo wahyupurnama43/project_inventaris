@@ -44,7 +44,12 @@ class Controller
                 }
             } else {
                 // jika bukan array maka load seperti biasa
-                require_once "../app/views/$path.php";
+                if (strpos($path, ".")) {
+                    // jika mengandung char '.' maka akan direplace dengan '/'
+                    require_once "../app/views/" . str_replace(".", "/", $path) . ".php";
+                } else {
+                    require_once "../app/views/$path.php";
+                }
             }
         } else {
             throw new Error("Path can't be empty");
@@ -61,7 +66,7 @@ class Controller
      * @return Object|mixed class 
      * 
      */
-    public function useModel($path)
+    public function useModel(string $path)
     {
         if (isset($path) && !empty($path) || $path !== '') {
             // cek jika path mengandung titik
