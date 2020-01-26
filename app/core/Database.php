@@ -1,5 +1,7 @@
 <?php
 
+namespace Inventaris\Core;
+
 /**
  * 
  * Database.php
@@ -48,8 +50,8 @@ class Database
          * 
          */
         $opts = [
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            \PDO::ATTR_PERSISTENT => true,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ];
         try {
             /**
@@ -64,8 +66,8 @@ class Database
              * @return mixed connection
              * 
              */
-            $this->dbh = new PDO($dsn, $this->dbUser, $this->dbPass, $opts);
-        } catch (PDOException $e) {
+            $this->dbh = new \PDO($dsn, $this->dbUser, $this->dbPass, $opts);
+        } catch (\PDOException $e) {
             die($e->getMessage());
         }
     }
@@ -111,16 +113,16 @@ class Database
         if (is_null($type)) {
             switch (true) {
                 case is_int($value):
-                    $type = PDO::PARAM_INT;
+                    $type = \PDO::PARAM_INT;
                     break;
                 case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
+                    $type = \PDO::PARAM_BOOL;
                     break;
                 case is_null($value):
-                    $type = PDO::PARAM_NULL;
+                    $type = \PDO::PARAM_NULL;
                     break;
                 default:
-                    $type = PDO::PARAM_STR;
+                    $type = \PDO::PARAM_STR;
                     break;
             }
         }
@@ -154,7 +156,7 @@ class Database
     public function getAllData()
     {
         $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -172,7 +174,7 @@ class Database
     public function getData()
     {
         $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_ASSOC);
+        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+namespace Inventaris\Core;
+
 /**
  * 
  * file inti aplikasi yang merupakan core dari aplikasi, disini digunakan untuk menjalankan

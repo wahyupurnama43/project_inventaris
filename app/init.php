@@ -1,5 +1,9 @@
 <?php
 
+use Inventaris\Core;
+use Inventaris\Core\App as SystemApplication;
+
+
 /**
  * 
  * spl_autoload_register($function)
@@ -14,9 +18,13 @@
 
 require_once "core/Config.php"; // memanggil file konfigurasi
 
+
 spl_autoload_register(function ($classname) {
+    $classname = explode("\\", $classname);
+    $classname = end($classname);
     require_once "core/$classname.php";
 });
 
 // instansiasi class app
-$app = new App();
+
+$app = new SystemApplication();

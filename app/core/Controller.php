@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Inventaris\Core;
+
 /**
  * 
  * Controller.php
@@ -52,7 +54,7 @@ class Controller
                 }
             }
         } else {
-            throw new Error("Path can't be empty");
+            throw new \Error("Path can't be empty");
         }
     }
     /**
