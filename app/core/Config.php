@@ -86,3 +86,12 @@ define('DB_PASS', '');
  * 
  */
 define('DB_NAME', 'db_inventaris');
+
+/**
+ * 
+ * DB_CHARSET
+ * 
+ * deklarasi untuk menyimpan charset, default nya adalah 'utf8mb4'
+ * 
+ */
+define('CHARSET', 'utf8mb4');

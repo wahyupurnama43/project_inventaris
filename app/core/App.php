@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ * file inti aplikasi yang merupakan core dari aplikasi, disini digunakan untuk menjalankan
+ * controller dan method berdasarkan url
+ * 
+ */
+
 class App
 {
     /**
