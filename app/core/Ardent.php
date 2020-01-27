@@ -73,4 +73,34 @@ class Ardent
             }
         }
     }
+
+    /**
+     * 
+     * destroyCookies($cookiename)
+     * 
+     * method ini digunakan untuk meng-unset cookie
+     * @param array|String $cookiename , untuk menampung nama cookie dapat berupa string atau array
+     * 
+     */
+    public static function destroyCookies($cookiename)
+    {
+        if (isset($cookiename)) {
+            // apabila cookiename adalah tipe data array
+            if (is_array($cookiename)) {
+                foreach ($cookiename as $cn) {
+                    if ($cn !== '') {
+                        setcookie($cn, '', time() - time() * 2, "/");
+                    } else {
+                        throw new \Error("this parameter can't be empty.");
+                    }
+                }
+            } else {
+                if ($cookiename !== '') {
+                    setcookie($cookiename, '', time() - time() * 2, "/");
+                } else {
+                    throw new \Error("this parameter can't be empty.");
+                }
+            }
+        }
+    }
 }
