@@ -15,6 +15,14 @@ class Auth extends Controller
             } else {
                 $this->useModel("Auth_model")->login($_POST);
             }
+        } else {
+            if ($_COOKIE['role'] === '0' || $_COOKIE['role'] === 0) {
+                Ardent::redirect(BASE_URL . "user");
+            } elseif ($_COOKIE['role'] === '1' || $_COOKIE['role'] === 1) {
+                Ardent::redirect(BASE_URL . "petugas");
+            } else {
+                Ardent::redirect(BASE_URL . "admin");
+            }
         }
     }
     public function register()
@@ -30,6 +38,14 @@ class Auth extends Controller
                     setFlash("Congrats! You success create an account. Please login!", "success");
                     Ardent::redirect(BASE_URL . "auth");
                 }
+            }
+        } else {
+            if ($_COOKIE['role'] === '0' || $_COOKIE['role'] === 0) {
+                Ardent::redirect(BASE_URL . "user");
+            } elseif ($_COOKIE['role'] === '1' || $_COOKIE['role'] === 1) {
+                Ardent::redirect(BASE_URL . "petugas");
+            } else {
+                Ardent::redirect(BASE_URL . "admin");
             }
         }
     }
