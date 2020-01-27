@@ -12,10 +12,16 @@ git clone https://github.com/dwiprogrammer/project_inventaris.git
 
 ## Konfigurasi
 
-Kalian bisa mengkonfigurasi data yang digunakan dengan membuka file Config.php didalam
+Kalian bisa mengkonfigurasi data yang digunakan dengan membuka file .env atau disebut juga dengan environment. Dengan ini kalian bisa sangat mudah dalam mengkonfigurasi data
 
 ```path
-app/core/Config.php
+.env
+```
+
+Untuk contoh penggunaan environment bisa lihat di
+
+```path
+.env.example
 ```
 
 ## Default Database
