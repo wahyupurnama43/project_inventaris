@@ -24,7 +24,7 @@
  * sesuaikan dengan url localhost mu, defaultnya adalah 'http://localhost/project_inventaris/public/'
  * 
  */
-define('BASE_URL', 'http://localhost/project_inventaris/public/');
+define('BASE_URL', isset($_ENV["BASE_URL"]) ? $_ENV["BASE_URL"] : "");
 
 
 /**
@@ -36,7 +36,7 @@ define('BASE_URL', 'http://localhost/project_inventaris/public/');
  * ingin kalian load
  * 
  */
-define('DEFAULT_HOMEPAGE', 'home');
+define('DEFAULT_HOMEPAGE', isset($_ENV["DEFAULT_HOMEPAGE"]) ? $_ENV["DEFAULT_HOMEPAGE"] : "");
 
 /**
  * 
@@ -58,7 +58,7 @@ define('DEFAULT_HOMEPAGE', 'home');
  * deklarasi konstanta untuk menyimpan nama host, default adalah 'localhost'
  * 
  */
-define('DB_HOST', 'localhost');
+define('DB_HOST', isset($_ENV["DB_HOST"]) ? $_ENV["DB_HOST"] : "");
 
 /**
  * 
@@ -67,7 +67,7 @@ define('DB_HOST', 'localhost');
  * deklarasi konstanta untuk menyimpan nama user, default adalah 'root'
  * 
  */
-define('DB_USER', 'root');
+define('DB_USER', isset($_ENV["DB_USER"]) ? $_ENV["DB_USER"] : "");
 
 /**
  * 
@@ -76,7 +76,7 @@ define('DB_USER', 'root');
  * deklarasi untuk menyimpan password dari sql_server, default adalah '' (string kosong)
  * 
  */
-define('DB_PASS', '');
+define('DB_PASS', isset($_ENV["DB_PASS"]) ? $_ENV["DB_PASS"] : "");
 
 /**
  * 
@@ -85,7 +85,7 @@ define('DB_PASS', '');
  * deklarasi untuk menyimpan nama database yang akan digunakan, default adalah 'db_inventaris'
  * 
  */
-define('DB_NAME', 'db_inventaris');
+define('DB_NAME', isset($_ENV["DB_NAME"]) ? $_ENV["DB_NAME"] : "");
 
 /**
  * 
@@ -94,4 +94,4 @@ define('DB_NAME', 'db_inventaris');
  * deklarasi untuk menyimpan charset, default nya adalah 'utf8mb4'
  * 
  */
-define('CHARSET', 'utf8mb4');
+define('CHARSET', isset($_ENV["CHARSET"]) ? $_ENV["CHARSET"] : "");

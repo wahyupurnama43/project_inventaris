@@ -15,9 +15,7 @@ use Inventaris\Core\App as SystemApplication;
  * @return mixed
  * 
  */
-
 require_once "core/Config.php"; // memanggil file konfigurasi
-
 
 spl_autoload_register(function ($classname) {
     $classname = explode("\\", $classname);
