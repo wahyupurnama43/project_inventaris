@@ -1,5 +1,9 @@
 <?php
 
+if (!session_id()) {
+    session_start();
+}
+
 /**
  * 
  * file helper untuk validasi form
@@ -38,29 +42,24 @@ function post($name)
  */
 function setError($err_code)
 {
+    $err = [
+        "all_empty" => "This field is required.",
+        "name_empty" => "This field is required.",
+        "jurusan_empty" => "This field is required.",
+        "class_empty" => "This field is required.",
+        "user_empty" => "This field is required.",
+        "user_error" => "Username not founded in database.",
+        "user_copy" => "Username is already taken.",
+        "pass_empty" => "This field is required.",
+        "pass_error" => "Password is not matching."
+    ];
     if (isset($err_code)) {
-        $_SESSION['err'] = [
-            "is_error" => true
-        ];
-        switch ((int) $err_code) {
-            case 1:
-                return $_SESSION['err'] = [
-                    "msg" => "Username not found in out database."
-                ];
-                break;
-            case 2:
-                return $_SESSION['err'] = [
-                    "msg" => "This field can't be empty."
-                ];
-                break;
-            case 3:
-                return $_SESSION['err'] = [
-                    "msg" => "Password is not matching."
-                ];
-                break;
-            default:
-                return null;
-                break;
+        if (is_array($err_code)) {
+            foreach ($err_code as $code) {
+                $_SESSION['err'][$code] = $err[$code];
+            }
+        } else {
+            $_SESSION['err'][$err_code] = $err[$err_code];
         }
     }
 }
@@ -74,79 +73,59 @@ function setError($err_code)
  * @return mixed
  * 
  */
-function showError()
+function showError($err_code)
 {
-    if (isset($_SESSION['err'])) {
-        return '
-        <small class="text-danger">' . $_SESSION['err']['msg'] . '</small>
-        ';
-        unset($_SESSION['err']);
-    } else {
-        throw new Error("Session is not setted yet.");
-    }
-}
-
-/**
- * 
- * required($variable)
- * 
- * method ini digunakan untuk menandakan sebuah variable itu diperlukan
- * 
- * @param mixed $variable , untuk menampung data yang ingin divalidasi
- * 
- * @return boolean
- * 
- */
-function required($variable)
-{
-    if (isset($variable) || $variable !== '' || !empty($variable)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * 
- * min_length($variable, $len)
- * 
- * method ini digunakan untuk memvalidasi panjang rendah dari sebuah variable
- * 
- * @param String $variable , menampung data yang ingin divalidasi
- * @param int $len , menampung seberapa panjang yang ingin dicapai
- * 
- * @return boolean
- * 
- */
-function min_length($variable, int $len)
-{
-    if (isset($variable)) {
-        if (strlen($variable) > (int) $len) {
-            return true;
+    if (isset($err_code)) {
+        if (is_array($err_code)) {
+            foreach ($err_code as $value) {
+                if (isset($_SESSION['err'][$value])) {
+                    return '
+                    <small class="text-danger">' . $_SESSION['err'][$value] . '</small>
+                    ';
+                } else {
+                    return "";
+                }
+            }
+            unset($_SESSION['err']);
         } else {
-            return false;
+            if (isset($_SESSION['err'][$err_code])) {
+                return '
+                <small class="text-danger">' . $_SESSION['err'][$err_code] . '</small>
+                ';
+                unset($_SESSION['err']);
+            } else {
+                return "";
+            }
         }
     }
 }
 
-/**
- * 
- * valid_email($variable)
- * 
- * method ini digunakan untuk memvalidasi email
- * 
- * @param String $variable , untuk menampung email pengguna
- * 
- * @return boolean
- * 
- */
-function valid_email($variable)
+
+function setSavedValue($name, $value)
 {
-    if (isset($variable)) {
-        if (strpos($variable, "@")) {
-            return true;
+    if (!empty($name) && !empty($value)) {
+        if (is_array($name) && is_array($value)) {
+            for ($n = 0; $n < count($name); $n++) {
+                $_SESSION['def_value'][$name[$n]] = $value[$n];
+            }
         } else {
-            return false;
+            $_SESSION['def_value'][$name] = $value;
+        }
+    }
+}
+
+function saved($name)
+{
+    if (!empty($name)) {
+        if (isset($_SESSION["def_value"])) {
+            if ($_SESSION["def_value"][$name]) {
+                return $_SESSION["def_value"][$name];
+                unset($_SESSION['def_value']);
+            } else {
+                return '';
+            }
+        } else {
+            return '';
         }
     }
 }

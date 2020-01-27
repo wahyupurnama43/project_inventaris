@@ -1,5 +1,9 @@
 <?php
 
+namespace Inventaris\Core;
+
+use Error;
+
 /**
  * 
  * Ardent.php
@@ -178,30 +182,5 @@ class Ardent
     public static function redirect($url)
     {
         header("Location: " . $url);
-    }
-
-    public static function setFlash($message, $type)
-    {
-        if (!session_id()) {
-            session_start();
-        }
-        $_SESSION['flasher'] = [
-            "msg" => $message,
-            "type" => $type
-        ];
-    }
-    public static function flash()
-    {
-        if (isset($_SESSION['flasher'])) {
-            echo '
-            <div class="alert alert-' . $_SESSION['flasher']['type'] . ' alert-dismissible fade show" role="alert">
-                ' . $_SESSION['flasher']['msg'] . '.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            ';
-            unset($_SESSION['flasher']);
-        }
     }
 }

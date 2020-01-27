@@ -1,5 +1,10 @@
 <?php
 
+namespace Inventaris\Core;
+
+use PDO;
+use PDOException;
+
 /**
  * 
  * Database.php

@@ -1,7 +1,8 @@
 <?php
 
+use Inventaris\Core\Database;
 
-class Main
+class Main_model
 {
     private $tbJurusan = "tb_jurusan";
 

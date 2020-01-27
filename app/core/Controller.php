@@ -1,5 +1,8 @@
 <?php
 
+namespace Inventaris\Core;
+
+
 /**
  * 
  * Controller.php

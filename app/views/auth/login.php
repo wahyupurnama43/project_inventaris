@@ -13,15 +13,25 @@
                                 <h1 class="h4 text-gray-900">Inventaris</h1>
                                 <h3 class="h6 text-gray-800 mb-4">Welcome Back!</h3>
                             </div>
-                            <form class="user">
-                                <?php Ardent::flash(); ?>
+                            <form class="user" action="" method="POST">
+                                <?php flash(); ?>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter your username ...">
+                                    <label for="username">
+                                        <small>Username : </small>
+                                    </label>
+                                    <input type="text" class="form-control <?= showError("user_empty") || showError("user_error") ? "is-invalid" : ""; ?>" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter your username ..." value="<?= saved("username") ?>">
+                                    <?= showError("user_empty"); ?>
+                                    <?= showError("user_error"); ?>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
+                                    <label for="password">
+                                        <small>Password : </small>
+                                    </label>
+                                    <input type="password" class="form-control <?= showError("pass_empty") || showError("pass_error") ? "is-invalid" : ""; ?>" id="password" name="password" placeholder="Password">
+                                    <?= showError("pass_empty"); ?>
+                                    <?= showError("pass_error"); ?>
                                 </div>
-                                <button type="submit" name="login" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" name="login" class="btn btn-primary btn-block">
                                     Login
                                 </button>
                             </form>
