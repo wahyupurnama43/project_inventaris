@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Inventaris\Core;
 
+use Error;
+
 /**
  * 
  * Ardent.php
@@ -62,13 +64,13 @@ class Ardent
                         setcookie($cookiename[$count], $cookievalue[$count], time() + $cookietime, "/");
                     }
                 } else {
-                    throw new \Error("this parameter can't be empty.");
+                    throw new Error("this parameter can't be empty.");
                 }
             } else {
                 if ($cookiename !== '' && $cookievalue !== '' && $cookietime !== 0) {
                     setcookie($cookiename, $cookievalue, time() + $cookietime, "/");
                 } else {
-                    throw new \Error("this parameter can't be empty.");
+                    throw new Error("this parameter can't be empty.");
                 }
             }
         }
@@ -91,16 +93,44 @@ class Ardent
                     if ($cn !== '') {
                         setcookie($cn, '', time() - time() * 2, "/");
                     } else {
-                        throw new \Error("this parameter can't be empty.");
+                        throw new Error("this parameter can't be empty.");
                     }
                 }
             } else {
                 if ($cookiename !== '') {
                     setcookie($cookiename, '', time() - time() * 2, "/");
                 } else {
-                    throw new \Error("this parameter can't be empty.");
+                    throw new Error("this parameter can't be empty.");
                 }
             }
+        }
+    }
+    /**
+     * 
+     * loadHelper($helpername)
+     * 
+     * method ini digunakan untuk meload helper dari folder helper
+     * @param String|array $helpername , untuk menampung nama helper.
+     * 
+     * @return mixed
+     * 
+     */
+    public static function loadHelper($helpername)
+    {
+        if (isset($helpername) && !empty($helpername) || $helpername !== '') {
+            if (is_array($helpername)) {
+                foreach ($helpername as $hn) {
+                    if ($hn !== '') {
+                        require_once "../app/helper/$hn.php";
+                    } else {
+                        throw new Error("this parameter can't be empty.");
+                    }
+                }
+            } else {
+                require_once "../app/helper/$helpername.php";
+            }
+        } else {
+            throw new Error("this parameter can't be empty.");
         }
     }
 }

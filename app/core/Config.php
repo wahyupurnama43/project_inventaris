@@ -95,3 +95,12 @@ define('DB_NAME', isset($_ENV["DB_NAME"]) ? $_ENV["DB_NAME"] : "");
  * 
  */
 define('CHARSET', isset($_ENV["CHARSET"]) ? $_ENV["CHARSET"] : "");
+
+/**
+ * 
+ * LIBRARY
+ * 
+ * deklarasi untuk menload library
+ * 
+ */
+define('LIBRARY', ['form_validation', 'notification']);
