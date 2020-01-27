@@ -133,4 +133,58 @@ class Ardent
             throw new Error("this parameter can't be empty.");
         }
     }
+
+    /**
+     * 
+     * loadSpesificViews($path)
+     * 
+     * method untuk menampilkan views dari dalam file
+     * 
+     * @param String $path , menampung data path
+     * 
+     * @return String
+     * 
+     */
+    public static function loadSpesificViews($path, $params)
+    {
+        if (isset($path) && $path !== '') {
+            require_once "../app/views/$path.php";
+        }
+    }
+
+    /**
+     * 
+     * dd($data)
+     * 
+     * method ini digunakan untuk mendump sebuah data dan kemudian tidak menjalankan script
+     * dibawahya
+     * 
+     * @param mixed $data , menampung data yang ingin ditampilkan
+     * 
+     * @return mixed
+     * 
+     */
+    public static function dd($data)
+    {
+        var_dump($data);
+        die();
+        exit();
+    }
+
+    /**
+     * 
+     * redirect($url)
+     * 
+     * method ini digunakan untuk menredirect atau memaksa user berpindah kehalaman
+     * yang diinginkan
+     * 
+     * @param String $path , menampung data path
+     * 
+     */
+    public static function redirect($url)
+    {
+        if (isset($url) && $url !== '') {
+            header("Refresh:0, url=" . $url);
+        }
+    }
 }

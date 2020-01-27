@@ -100,7 +100,9 @@ define('CHARSET', isset($_ENV["CHARSET"]) ? $_ENV["CHARSET"] : "");
  * 
  * LIBRARY
  * 
- * deklarasi untuk menload library
+ * deklarasi untuk menload library yang diperlukan
+ * contoh :
+ * ['form_validation', 'notification']
  * 
  */
-define('LIBRARY', ['form_validation', 'notification']);
+define('LIBRARY', []);

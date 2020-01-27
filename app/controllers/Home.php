@@ -7,7 +7,6 @@ class Home extends Controller
     public function index()
     {
         $params['title'] = "Inventaris";
-        makeNotification("asiap santuy cuy");
         $this->useViews(["templates.header", "index", "templates.footer"], $params);
     }
 }
