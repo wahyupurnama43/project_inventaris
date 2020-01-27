@@ -105,4 +105,4 @@ define('CHARSET', isset($_ENV["CHARSET"]) ? $_ENV["CHARSET"] : "");
  * ['form_validation', 'notification']
  * 
  */
-define('LIBRARY', []);
+define('LIBRARY', ['form_validation', 'notification']);

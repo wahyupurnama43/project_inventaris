@@ -23,14 +23,13 @@
  */
 function setFlash($message, $type)
 {
-    if (isset($message) && isset($type)) {
-        $_SESSION['flasher'] = [
-            "msg" => $message,
-            "type" => $type
-        ];
-    } else {
-        throw new Error("parameter can't be empty.");
+    if (!session_id()) {
+        session_start();
     }
+    $_SESSION['flasher'] = [
+        "msg" => $message,
+        "type" => $type
+    ];
 }
 /**
  * 
@@ -51,8 +50,6 @@ function flash()
         </div>
         ';
         unset($_SESSION['flasher']);
-    } else {
-        echo "";
     }
 }
 /**

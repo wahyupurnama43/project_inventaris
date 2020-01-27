@@ -1,9 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Inventaris\Core;
-
 /**
  * 
  * Controller.php
@@ -14,6 +10,8 @@ namespace Inventaris\Core;
  * file ini harus di inherit terhadap seluruh controller
  * 
  */
+
+use Inventaris\Models;
 
 class Controller
 {

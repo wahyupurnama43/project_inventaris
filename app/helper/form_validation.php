@@ -45,22 +45,17 @@ function setError($err_code)
         switch ((int) $err_code) {
             case 1:
                 return $_SESSION['err'] = [
-                    "msg" => "Username tidak boleh kosong."
+                    "msg" => "Username not found in out database."
                 ];
                 break;
             case 2:
                 return $_SESSION['err'] = [
-                    "msg" => "Username tidak ditemukan."
+                    "msg" => "This field can't be empty."
                 ];
                 break;
             case 3:
                 return $_SESSION['err'] = [
-                    "msg" => "Password tidak boleh kosong."
-                ];
-                break;
-            case 4:
-                return $_SESSION['err'] = [
-                    "msg" => "Password tidak sama."
+                    "msg" => "Password is not matching."
                 ];
                 break;
             default:
