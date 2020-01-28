@@ -9,7 +9,7 @@ class Auth extends Controller
     {
         if (!isset($_COOKIE['is_login'])) {
             if (!isset($_POST['login'])) {
-                $params['title'] = "Inventaris - Login";
+                $params['title'] = $_ENV["APP_NAME"] . " - Login";
                 $this->useViews(["templates.auth.header", "auth.login", "templates.auth.footer"], $params);
                 Ardent::unsetSession();
             } else {
@@ -29,7 +29,7 @@ class Auth extends Controller
     {
         if (!isset($_COOKIE['is_login'])) {
             if (!isset($_POST["register"])) {
-                $params['title'] = "Inventaris - Register";
+                $params['title'] = $_ENV["APP_NAME"] . " - Register";
                 $params['jurusan'] = $this->useModel("Main_model")->getJurusan();
                 $this->useViews(["templates.auth.header", "auth.register", "templates.auth.footer"], $params);
                 Ardent::unsetSession();

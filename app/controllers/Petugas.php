@@ -13,7 +13,7 @@ use Inventaris\Core\Controller;
 
 class Petugas extends Controller
 {
-    public function index()
+    public function dashboard()
     {
         if (isset($_COOKIE['is_login']) && $_COOKIE['role'] === '1' || $_COOKIE['role'] === 1) {
             echo "Petugas/Index";

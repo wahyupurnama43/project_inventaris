@@ -146,7 +146,11 @@ class Ardent
     public static function loadSpesificViews($path, $params)
     {
         if (isset($path) && $path !== '') {
-            require_once "../app/views/$path.php";
+            if (strpos($path, ".")) {
+                require_once "../app/views/" . str_replace(".", "/", $path) . ".php";
+            } else {
+                require_once "../app/views/$path.php";
+            }
         }
     }
 

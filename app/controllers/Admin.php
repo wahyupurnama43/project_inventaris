@@ -13,10 +13,12 @@ use Inventaris\Core\Controller;
 
 class Admin extends Controller
 {
-    public function index()
+    public function dashboard()
     {
         if (isset($_COOKIE['is_login']) && $_COOKIE['role'] === '2' || $_COOKIE['role'] === 2) {
-            echo "User/Index";
+            $params['title'] = $_ENV["APP_NAME"] . " - Admin";
+            $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
+            $this->useViews(['templates.header', 'admin.index', 'templates.footer'], $params);
         } else {
             Ardent::redirect(BASE_URL . "auth");
         }

@@ -45,6 +45,7 @@ function setError($err_code)
     $err = [
         "all_empty" => "This field is required.",
         "name_empty" => "This field is required.",
+        "gender_empty" => "This field is required.",
         "jurusan_empty" => "This field is required.",
         "class_empty" => "This field is required.",
         "user_empty" => "This field is required.",

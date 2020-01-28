@@ -61,11 +61,11 @@ class Auth_model
                     if (password_verify($password, $password_user)) {
                         Ardent::makeCookies(["is_login", "role", "username"], [password_hash($username, PASSWORD_BCRYPT), $role, $username], 7200);
                         if ($role === '0' || $role === 0) {
-                            Ardent::redirect(BASE_URL . "user");
+                            Ardent::redirect(BASE_URL . "user/dashboard");
                         } elseif ($role === '1' || $role === 1) {
-                            Ardent::redirect(BASE_URL . "petugas");
+                            Ardent::redirect(BASE_URL . "petugas/dashboard");
                         } else {
-                            Ardent::redirect(BASE_URL . "admin");
+                            Ardent::redirect(BASE_URL . "admin/dashboard");
                         }
                         Ardent::unsetSession();
                     } else {
@@ -100,6 +100,7 @@ class Auth_model
     public function registerNewAccount($data)
     {
         $fullname = post("fullname");
+        $gender = post("gender");
         $jurusan = post("jurusan");
         $class = post("class");
         $username = post("username");
@@ -109,45 +110,51 @@ class Auth_model
         setSavedValue(["fullname", "class", "username"], [$fullname, $class, $username]);
 
         if (isset($fullname) && $fullname !== '') {
-            if (isset($jurusan) && $jurusan !== '') {
-                if (isset($class) && $class !== '') {
-                    if (isset($username) && $username !== '') {
-                        if ($datauser = $this->getUserBy("username", $username)) {
-                            setError("user_copy");
-                            Ardent::redirect(BASE_URL . "auth/register");
-                        } else {
-                            if (isset($password) && $password !== '' || isset($conf_password) && $conf_password !== '') {
-                                if ($password === $conf_password) {
-                                    Ardent::unsetSession();
-                                    $q = "INSERT INTO $this->tb VALUES('',:fullname,:username,:password,:jurusan,:kelas,:role)";
-                                    $this->db->query($q);
-                                    $this->db->bind("fullname", $fullname);
-                                    $this->db->bind("username", $username);
-                                    $this->db->bind("password", password_hash($password, PASSWORD_BCRYPT));
-                                    $this->db->bind("jurusan", $jurusan);
-                                    $this->db->bind("kelas", $class);
-                                    $this->db->bind("role", 0);
-                                    $this->db->execute();
-                                    return $this->db->rowCount();
+            if (isset($gender) && $gender !== '') {
+                if (isset($jurusan) && $jurusan !== '') {
+                    if (isset($class) && $class !== '') {
+                        if (isset($username) && $username !== '') {
+                            if ($datauser = $this->getUserBy("username", $username)) {
+                                setError("user_copy");
+                                Ardent::redirect(BASE_URL . "auth/register");
+                            } else {
+                                if (isset($password) && $password !== '' || isset($conf_password) && $conf_password !== '') {
+                                    if ($password === $conf_password) {
+                                        Ardent::unsetSession();
+                                        $q = "INSERT INTO $this->tb VALUES('',:fullname,:gender,:username,:password,:jurusan,:kelas,:role)";
+                                        $this->db->query($q);
+                                        $this->db->bind("fullname", $fullname);
+                                        $this->db->bind("gender", $gender);
+                                        $this->db->bind("username", $username);
+                                        $this->db->bind("password", password_hash($password, PASSWORD_BCRYPT));
+                                        $this->db->bind("jurusan", $jurusan);
+                                        $this->db->bind("kelas", $class);
+                                        $this->db->bind("role", 0);
+                                        $this->db->execute();
+                                        return $this->db->rowCount();
+                                    } else {
+                                        setError("pass_error");
+                                        Ardent::redirect(BASE_URL . "auth/register");
+                                    }
                                 } else {
-                                    setError("pass_error");
+                                    setError("pass_empty");
                                     Ardent::redirect(BASE_URL . "auth/register");
                                 }
-                            } else {
-                                setError("pass_empty");
-                                Ardent::redirect(BASE_URL . "auth/register");
                             }
+                        } else {
+                            setError("user_empty");
+                            Ardent::redirect(BASE_URL . "auth/register");
                         }
                     } else {
-                        setError("user_empty");
+                        setError("class_empty");
                         Ardent::redirect(BASE_URL . "auth/register");
                     }
                 } else {
-                    setError("class_empty");
+                    setError("jurusan_empty");
                     Ardent::redirect(BASE_URL . "auth/register");
                 }
             } else {
-                setError("jurusan_empty");
+                setError("gender_empty");
                 Ardent::redirect(BASE_URL . "auth/register");
             }
         } else {

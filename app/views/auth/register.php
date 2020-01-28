@@ -24,6 +24,20 @@
                                     <?= showError("name_empty"); ?>
                                 </div>
                                 <div class="form-group">
+                                    <label for="fullname">
+                                        <small>Gender : </small>
+                                    </label>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio1" name="gender" class="custom-control-input" value="L">
+                                        <label class="custom-control-label" for="customRadio1">Male</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio2" name="gender" class="custom-control-input" value="P">
+                                        <label class="custom-control-label" for="customRadio2">Female</label>
+                                    </div>
+                                    <?= showError("gender_empty"); ?>
+                                </div>
+                                <div class="form-group">
                                     <label for="jurusan">
                                         <small>Majors : </small>
                                     </label>
