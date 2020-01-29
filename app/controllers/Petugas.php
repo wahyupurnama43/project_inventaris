@@ -20,7 +20,7 @@ class Petugas extends Controller
      * method ini untuk menload dashboard
      * 
      */
-    public function dashboard()
+    public function index()
     {
         if (isset($_COOKIE['is_login']) && $_COOKIE['role'] === '1' || $_COOKIE['role'] === 1) {
             echo "Petugas/Index";
@@ -40,6 +40,7 @@ class Petugas extends Controller
         if (isset($_COOKIE['is_login'])) {
             // hancurkan cookies yang jadi pertanda seorang user sudah login atau belum
             Ardent::destroyCookies(["is_login", "username", "role"]);
+            setFlash("Successfully logout from application, have a good day", "success");
             Ardent::redirect(BASE_URL . "auth");
         }
     }

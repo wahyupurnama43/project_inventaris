@@ -21,18 +21,7 @@
 </head>
 
 <body id="page-top">
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
-        <?= \Inventaris\Core\Ardent::loadSpesificViews("templates.sidebar", $params) ?>
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
-
-                <?= \Inventaris\Core\Ardent::loadSpesificViews("templates.topbar", $params); ?>
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">

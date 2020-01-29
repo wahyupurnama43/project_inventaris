@@ -7,10 +7,12 @@ class Auth_model
 {
     private $tb = "tb_user";
     private $db;
+    private $url;
 
     public function __construct()
     {
         $this->db = new Database();
+        $url = (int) $_COOKIE['role'] === 0 ? "user" : (int) $_COOKIE['role'] === 1 ? "petugas" : "admin";
     }
 
     /**
@@ -37,6 +39,98 @@ class Auth_model
 
     /**
      * 
+     * updateProfile
+     * 
+     * method ini digunakan untuk mengupdate profile
+     * 
+     * @return int 
+     * 
+     */
+    public function updateProfile()
+    {
+        $id = post('id');
+        $fullname = post("fullname");
+        $gender = post("gender");
+        $jurusan = post("jurusan");
+        $kelas = post("kelas");
+        $username = post('username');
+
+        // validation
+        if (isset($fullname) && $fullname !== '') {
+            if (isset($gender) && $gender !== '') {
+                if (isset($jurusan) && $jurusan !== '') {
+                    if (isset($kelas) && $kelas !== '') {
+                        if (isset($username) && $username !== '') {
+                            $q = "UPDATE $this->tb SET nama_user=:fullname,jurusan_user=:jurusan,kelas_user=:class,jenis_kelamin=:gender,username=:username WHERE id_user=:id";
+                            $this->db->query($q);
+                            $this->db->bind("id_user", $id);
+                            $this->db->bind("fullname", $fullname);
+                            $this->db->bind("jurusan", $jurusan);
+                            $this->db->bind("class", $kelas);
+                            $this->db->bind("gender", $gender);
+                            $this->db->bind("username", $username);
+                            $this->db->execute();
+                            return $this->db->rowCount();
+                        } else {
+                            setError("user_empty");
+                            Ardent::redirect(BASE_URL . $this->url . "editprofile");
+                        }
+                    } else {
+                        setError("class_empty");
+                        Ardent::redirect(BASE_URL . $this->url . "editprofile");
+                    }
+                } else {
+                    setError("jurusan_empty");
+                    Ardent::redirect(BASE_URL . $this->url . "editprofile");
+                }
+            } else {
+                setError("gender_empty");
+                Ardent::redirect(BASE_URL . $this->url . "editprofile");
+            }
+        } else {
+            setError("name_empty");
+            Ardent::redirect(BASE_URL . $this->url . "editprofile");
+        }
+    }
+
+    /**
+     * 
+     * updatePassword()
+     * 
+     * method ini digunakan untuk mengupdate password user
+     * 
+     * @return int
+     * 
+     */
+    public function updatePassword()
+    {
+        $id = post('id');
+        $old_password = post("password_lama");
+        $new_password = post("password_baru");
+        $con_password = post("konfirmasi_password");
+
+        $data_user_pass = $this->getUserBy("id_user", $id)['password'];
+
+        if (isset($old_password) && $old_password !== '') {
+            if (password_verify($old_password, $data_user_pass)) {
+                if (isset($new_password) && $new_password !== '') {
+                    if (isset($con_password) && $con_password !== '') {
+                        if ($new_password === $con_password) {
+                            $q = "UPDATE $this->tb SET password=:password WHERE id_user=:id";
+                            $this->db->query($q);
+                            $this->db->bind('password', password_hash($new_password, PASSWORD_BCRYPT));
+                            $this->db->bind("id", $id);
+                            $this->db->execute();
+                            return $this->db->rowCount();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 
      * login($data) 
      * 
      * method ini digunakan untuk login user
@@ -46,7 +140,7 @@ class Auth_model
      * @return int
      * 
      */
-    public function login($data)
+    public function login()
     {
         $username = post("username");
         $password = post("password");
@@ -61,11 +155,11 @@ class Auth_model
                     if (password_verify($password, $password_user)) {
                         Ardent::makeCookies(["is_login", "role", "username"], [password_hash($username, PASSWORD_BCRYPT), $role, $username], 7200);
                         if ($role === '0' || $role === 0) {
-                            Ardent::redirect(BASE_URL . "user/dashboard");
+                            Ardent::redirect(BASE_URL . "user");
                         } elseif ($role === '1' || $role === 1) {
-                            Ardent::redirect(BASE_URL . "petugas/dashboard");
+                            Ardent::redirect(BASE_URL . "petugas");
                         } else {
-                            Ardent::redirect(BASE_URL . "admin/dashboard");
+                            Ardent::redirect(BASE_URL . "admin");
                         }
                         Ardent::unsetSession();
                     } else {
@@ -97,7 +191,7 @@ class Auth_model
      * @return int 
      * 
      */
-    public function registerNewAccount($data)
+    public function registerNewAccount()
     {
         $fullname = post("fullname");
         $gender = post("gender");
