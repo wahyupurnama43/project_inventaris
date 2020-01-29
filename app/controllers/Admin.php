@@ -69,6 +69,9 @@ class Admin extends Controller
                             Ardent::destroyCookies(['is_login', 'role', 'username']);
                             Ardent::makeCookies(["is_login", "role", "username"], [password_hash($_POST['username'], PASSWORD_BCRYPT), $params['userdata']['role_user'], $_POST['username']], 7200);
                             Ardent::redirect(BASE_URL . $this->url . "/profile");
+                        } else {
+                            setFlash("Oops! something is when wrong here.", "danger");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }
                 } elseif ($action === 'changepassword') {
@@ -78,6 +81,9 @@ class Admin extends Controller
                     } else {
                         if ($this->useModel("Auth_model")->updatePassword() > 0) {
                             setFlash("Successfully update your password.", "success");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
+                        } else {
+                            setFlash("Oops! something is when wrong here.", "danger");
                             Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }
@@ -97,7 +103,7 @@ class Admin extends Controller
      * method ini untuk mengatur menu dan access menu
      * 
      */
-    public function menu($actions = '')
+    public function menu($actions = '', $verificator = '')
     {
         if (isset($_COOKIE['is_login'])) {
             $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
@@ -115,8 +121,49 @@ class Admin extends Controller
                         if ($this->useModel("Main_model")->addNewMenu()) {
                             setFlash("Successfully new menu is added.", "success");
                             Ardent::redirect(BASE_URL . $this->url . "/menu");
+                        } else {
+                            setFlash("Oops! Look is something when wrong here.", "danger");
+                            Ardent::redirect(BASE_URL . $this->url . "/menu");
                         }
                     }
+                } elseif (isset($actions) && $actions === 'deletemenu') {
+                    if (isset($verificator) && $verificator !== '') {
+                        if ($this->useModel("Main_model")->deleteMenu($verificator) > 0) {
+                            setFlash("Successfully deleted new menu.", "success");
+                            Ardent::redirect(BASE_URL . $this->url . "/menu");
+                        } else {
+                            setFlash("Oops! Look is something when wrong here.", "danger");
+                            Ardent::redirect(BASE_URL . $this->url . "/menu");
+                        }
+                    } else {
+                        setFlash("You entered invalid url for delete a menu.", "danger");
+                        makeNotification("Failed to delete menu!");
+                        Ardent::redirect(BASE_URL . $this->url . "/menu");
+                    }
+                } elseif (isset($actions) && $actions === 'editmenu') {
+                    if (isset($verificator) && $verificator !== '') {
+                        if (!isset($_POST['editmenu'])) {
+                            $params['title'] = $_ENV["APP_NAME"] . " - Edit Menu";
+                            $params['spes_menu'] = $this->useModel("Main_model")->getMenuById($verificator);
+                            $this->useViews(["templates.header", "admin.editmenu", "templates.footer"], $params);
+                        } else {
+                            if($this->useModel("Main_model")->updateMenu($verificator) > 0) {
+                                setFlash("Successfully update menu.", "success");
+                                makeNotification("Menu has been updated.");
+                                Ardent::redirect(BASE_URL . $this->url . "/menu");
+                            } else {
+                                setFlash("Oops! Look is something when wrong.", "danger");
+                                makeNotification("Failed to update menu.");
+                                Ardent::redirect(BASE_URL . $this->url . "/menu");
+                            }
+                        }
+                    } else {
+                        setFlash("You entered invalid url for edit a menu.", "danger");
+                        makeNotification("Failed to update menu.");
+                        Ardent::redirect(BASE_URL . $this->url . "/menu");
+                    }
+                } else {
+                    Ardent::redirect(BASE_URL . "errorpage/notfound");
                 }
             }
         } else {

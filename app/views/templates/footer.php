@@ -74,7 +74,7 @@ if ((int) $_COOKIE["role"] === 0) {
         $(".toast").toast({
             autohide: true,
             animation: true,
-            delay: 3000
+            delay: 7000
         });
         <?php if (isset($_SESSION['notification']['show'])) : ?>
             $(".toast").toast("show");

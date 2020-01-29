@@ -7,6 +7,7 @@ if ((int) $_COOKIE["role"] === 0) {
     $url = "admin";
 }
 ?>
+<?php showNotification(); ?>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Menu Lists</h1>
@@ -17,6 +18,7 @@ if ((int) $_COOKIE["role"] === 0) {
     <div class="col-12">
         <div class="card shadow">
             <div class="card-body">
+                <?php flash(); ?>
                 <div class="table-responsive mb-0 p-0">
                     <table class="table table-bordered mb-0" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -66,10 +68,10 @@ if ((int) $_COOKIE["role"] === 0) {
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <a href="" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip" data-placement="left" title="Edit this menu.">
+                                            <a href="<?= BASE_URL . $url . "/menu/editmenu/" . $menu['id_menu']; ?>" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip" data-placement="left" title="Edit this menu.">
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </a>
-                                            <a href="" class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip" data-placement="right" title="Delete this menu.">
+                                            <a href="<?= BASE_URL . $url . "/menu/deletemenu/" . $menu['id_menu']; ?>" class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip" data-placement="right" title="Delete this menu.">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </a>
                                         </td>

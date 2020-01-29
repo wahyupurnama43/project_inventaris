@@ -69,6 +69,9 @@ class User extends Controller
                             Ardent::destroyCookies(['is_login', 'role', 'username']);
                             Ardent::makeCookies(["is_login", "role", "username"], [password_hash($_POST['username'], PASSWORD_BCRYPT), $params['userdata']['role_user'], $_POST['username']], 7200);
                             Ardent::redirect(BASE_URL . $this->url . "/profile");
+                        } else {
+                            setFlash("Oops! something is when wrong here.", "danger");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }
                 } elseif ($action === 'changepassword') {
@@ -78,6 +81,9 @@ class User extends Controller
                     } else {
                         if ($this->useModel("Auth_model")->updatePassword() > 0) {
                             setFlash("Successfully update your password.", "success");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
+                        } else {
+                            setFlash("Oops! something is when wrong here.", "danger");
                             Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }

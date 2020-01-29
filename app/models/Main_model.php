@@ -68,6 +68,28 @@ class Main_model
         return $resMenu;
     }
 
+    public function getMenuById($id)
+    {
+        if ($id !== '') {
+            $q = "SELECT * FROM $this->tbMenu WHERE id_menu=:id";
+            $this->db->query($q);
+            $this->db->bind("id", $id);
+            $this->db->execute();
+            return $this->db->getData();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * addNewMenu()
+     * 
+     * method ini adalah method untuk memnambah sebuah menu baru
+     * 
+     * @return int
+     * 
+     */
     public function addNewMenu()
     {
         $menu_name = post("menu_name");
@@ -127,5 +149,93 @@ class Main_model
         }
 
         return false;
+    }
+
+    /**
+     * 
+     * deleteMenu($id)
+     * 
+     * method ini digunakan untuk menghapus sebuah menu
+     * 
+     * @param String $id , menampung id verifikator untuk menghapus sebuah menu
+     * 
+     * @return int 
+     * 
+     */
+    public function deleteMenu($id)
+    {
+        if ($id !== '') {
+            $q = "DELETE FROM $this->tbMenu WHERE id_menu=:id";
+            $this->db->query($q);
+            $this->db->bind("id", $id);
+            $this->db->execute();
+            return $this->db->rowCount();
+        } else {
+            return -1;
+        }
+    }
+
+    public function updateMenu($id)
+    {
+        if ($id !== '') {
+            $menu_name = post("menu_name");
+            $menu_link = post("menu_link");
+            $menu_icon = post("menu_icon");
+            $user_acc = post("access_user");
+            $petugas_acc = post("access_petugas");
+            $admin_acc = post("access_admin");
+            $access = [];
+            $url = (int) $_COOKIE['role'] === 0 ? "user" : (int) $_COOKIE['role'] === 1 ? "petugas" : "admin";
+            $is_go = false;
+
+            if ($user_acc !== null) {
+                $access[] = "0";
+            }
+            if ($petugas_acc !== null) {
+                $access[] = "1";
+            }
+            if ($admin_acc !== null) {
+                $access[] = "2";
+            }
+            if ($user_acc == null && $petugas_acc == null && $admin_acc == null) {
+                setError("menu_access_empty");
+                Ardent::redirect(BASE_URL . $url . "/menu/addnewmenu");
+            }
+
+            $access = implode("|", $access);
+
+            if ($menu_name != null && $menu_name !== '') {
+                $is_go = true;
+            } else {
+                setError("menu_name_empty");
+                Ardent::redirect(BASE_URL . $url . "/menu/addnewmenu");
+            }
+            if ($menu_link != null && $menu_link !== '') {
+                $is_go = true;
+            } else {
+                setError("menu_link_empty");
+                Ardent::redirect(BASE_URL . $url . "/menu/addnewmenu");
+            }
+            if ($menu_icon != null && $menu_icon !== '') {
+                $is_go = true;
+            } else {
+                setError("menu_icon_empty");
+                Ardent::redirect(BASE_URL . $url . "/menu/addnewmenu");
+            }
+
+            if ($is_go) {
+                $q = "UPDATE $this->tbMenu SET nama_menu=:menu_name,link_menu=:menu_link,icon_menu=:menu_icon,role_menu=:access WHERE id_menu=:id";
+                $this->db->query($q);
+                $this->db->bind("id", $id);
+                $this->db->bind("menu_name", $menu_name);
+                $this->db->bind("menu_link", $menu_link);
+                $this->db->bind("menu_icon", $menu_icon);
+                $this->db->bind("access", $access);
+                $this->db->execute();
+                return $this->db->rowCount();
+            }
+        } else {
+            return -1;
+        }
     }
 }
