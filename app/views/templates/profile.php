@@ -58,7 +58,13 @@
         </div>
     </div>
     <?php
-    $url = (int) $_COOKIE['role'] === 0 ? "user" : (int) $_COOKIE['role'] === 1 ? "petugas" : "admin";
+    if ((int) $_COOKIE["role"] === 0) {
+        $url = "user";
+    } elseif ((int) $_COOKIE['role'] === 1) {
+        $url = "petugas";
+    } else {
+        $url = "admin";
+    }
     ?>
     <div class="col-4 d-block">
         <a href="<?= BASE_URL . $url . "/profile/editprofile" ?>" class="btn btn-primary btn-icon-split mb-3">

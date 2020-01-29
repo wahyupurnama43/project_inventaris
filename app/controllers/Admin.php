@@ -13,6 +13,17 @@ use Inventaris\Core\Controller;
 
 class Admin extends Controller
 {
+    protected $url;
+    public function __construct()
+    {
+        if ((int) $_COOKIE["role"] === 0) {
+            $this->url = "user";
+        } elseif ((int) $_COOKIE['role'] === 1) {
+            $this->url = "petugas";
+        } else {
+            $this->url = "admin";
+        }
+    }
     /**
      * 
      * dashboard()
@@ -47,7 +58,6 @@ class Admin extends Controller
                 $params['title'] = $_ENV["APP_NAME"] . " - Profile";
                 $this->useViews(['templates.header', 'templates.profile', 'templates.footer'], $params);
             } else {
-                $url = (int) $_COOKIE['role'] === 0 ? "user" : (int) $_COOKIE['role'] === 1 ? "petugas" : "admin";
                 if ($action === 'editprofile') {
                     if (!isset($_POST['edit'])) {
                         $params['title'] = $_ENV["APP_NAME"] . " - Edit Profile";
@@ -58,7 +68,7 @@ class Admin extends Controller
                             setFlash("Successfully update your data.", "success");
                             Ardent::destroyCookies(['is_login', 'role', 'username']);
                             Ardent::makeCookies(["is_login", "role", "username"], [password_hash($_POST['username'], PASSWORD_BCRYPT), $params['userdata']['role_user'], $_POST['username']], 7200);
-                            Ardent::redirect(BASE_URL . $url . "/profile");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }
                 } elseif ($action === 'changepassword') {
@@ -68,7 +78,7 @@ class Admin extends Controller
                     } else {
                         if ($this->useModel("Auth_model")->updatePassword() > 0) {
                             setFlash("Successfully update your password.", "success");
-                            Ardent::redirect(BASE_URL . $url . "/profile");
+                            Ardent::redirect(BASE_URL . $this->url . "/profile");
                         }
                     }
                 } else {
@@ -87,12 +97,31 @@ class Admin extends Controller
      * method ini untuk mengatur menu dan access menu
      * 
      */
-    public function menu()
+    public function menu($actions = '')
     {
-        $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
-        $params['menu'] = $this->useModel("Main_model")->getMenu();
-        $params['title'] = $_ENV["APP_NAME"] . " - Admin";
-        $this->useViews(['templates.header', 'admin.index', 'templates.footer'], $params);
+        if (isset($_COOKIE['is_login'])) {
+            $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
+            $params['menu'] = $this->useModel("Main_model")->getMenu();
+            $params['title'] = $_ENV["APP_NAME"] . " - Admin";
+            if (!isset($actions) || $actions === '') {
+                $this->useViews(['templates.header', 'admin.menulists', 'templates.footer'], $params);
+            } else {
+                if (isset($actions) && $actions === "addnewmenu") {
+                    if (!isset($_POST["addnewmenu"])) {
+                        $params['title'] = $_ENV["APP_NAME"] . " - Add New Menu";
+                        $this->useViews(["templates.header", "admin.addmenu", "templates.footer"], $params);
+                        Ardent::unsetSession();
+                    } else {
+                        if ($this->useModel("Main_model")->addNewMenu()) {
+                            setFlash("Successfully new menu is added.", "success");
+                            Ardent::redirect(BASE_URL . $this->url . "/menu");
+                        }
+                    }
+                }
+            }
+        } else {
+            Ardent::redirect(BASE_URL . "errorpage/forbidden");
+        }
     }
 
     /**

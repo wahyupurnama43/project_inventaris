@@ -13,6 +13,17 @@ use Inventaris\Core\Controller;
 
 class Petugas extends Controller
 {
+    protected $url;
+    public function __construct()
+    {
+        if ((int) $_COOKIE["role"] === 0) {
+            $this->url = "user";
+        } elseif ((int) $_COOKIE['role'] === 1) {
+            $this->url = "petugas";
+        } else {
+            $this->url = "admin";
+        }
+    }
     /**
      * 
      * dashboard()

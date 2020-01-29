@@ -22,8 +22,10 @@ if (!session_id()) {
  */
 function post($name)
 {
-    if (isset($name) && $name !== '') {
-        return htmlspecialchars($_POST[$name]);
+    if (isset($name) &&  $name !== '') {
+        if (isset($_POST[$name])) {
+            return htmlspecialchars($_POST[$name]);
+        }
     } else {
         throw new Error("parameter can't be empty.");
     }
@@ -52,7 +54,11 @@ function setError($err_code)
         "user_error" => "Username not founded in database.",
         "user_copy" => "Username is already taken.",
         "pass_empty" => "This field is required.",
-        "pass_error" => "Password is not matching."
+        "pass_error" => "Password is not matching.",
+        "menu_name_empty" => "This field is required.",
+        "menu_link_empty" => "This field is required.",
+        "menu_icon_empty" => "This field is required.",
+        "menu_access_empty" => "This field is required."
     ];
     if (isset($err_code)) {
         if (is_array($err_code)) {
@@ -93,10 +99,10 @@ function showError($err_code)
                 return '
                 <small class="text-danger">' . $_SESSION['err'][$err_code] . '</small>
                 ';
-                unset($_SESSION['err']);
             } else {
                 return "";
             }
+            unset($_SESSION['err']);
         }
     }
 }

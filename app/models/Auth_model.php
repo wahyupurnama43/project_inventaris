@@ -63,7 +63,7 @@ class Auth_model
                         if (isset($username) && $username !== '') {
                             $q = "UPDATE $this->tb SET nama_user=:fullname,jurusan_user=:jurusan,kelas_user=:class,jenis_kelamin=:gender,username=:username WHERE id_user=:id";
                             $this->db->query($q);
-                            $this->db->bind("id_user", $id);
+                            $this->db->bind("id", $id);
                             $this->db->bind("fullname", $fullname);
                             $this->db->bind("jurusan", $jurusan);
                             $this->db->bind("class", $kelas);
