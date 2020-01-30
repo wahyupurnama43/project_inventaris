@@ -7,6 +7,7 @@ class Main_model
 {
     private $tbJurusan = "tb_jurusan";
     private $tbMenu = "tb_menu";
+    private $tbUser = "tb_user";
 
     private $db;
 
@@ -29,6 +30,67 @@ class Main_model
         $q = "SELECT * FROM $this->tbJurusan";
         $this->db->query($q);
         return $this->db->getAllData();
+    }
+
+    public function getJurusanAndKepJur()
+    {
+        $q = "SELECT * FROM $this->tbJurusan INNER JOIN $this->tbUser ON $this->tbJurusan.kode_jurusan=$this->tbUser.kelas_user";
+        $this->db->query($q);
+        return $this->db->getAllData();
+    }
+
+    public function getKepalaJurusan()
+    {
+        $q = "SELECT * FROM $this->tbUser WHERE role_user=:role";
+        $this->db->query($q);
+        $this->db->bind("role", 1);
+        return $this->db->getAllData();
+    }
+
+    public function addNewMajor()
+    {
+        $major_name = post("major_name");
+        $major_code = post("major_code");
+        $major_head = post("major_head");
+        $id_jurusan = uniqid("j-");
+
+        $is_go = false;
+        $url = (int) $_COOKIE['role'] === 0 ? "user" : (int) $_COOKIE['role'] === 1 ? "petugas" : "admin";
+
+        if ($major_name != null && $major_name !== '') {
+            $is_go = true;
+        } else {
+            setError("major_name_empty");
+            Ardent::redirect(BASE_URL . $url . "/major/addnewmajor");
+        }
+
+        if ($major_code != null && $major_code !== '') {
+            $is_go = true;
+        } else {
+            setError("major_code_empty");
+            Ardent::redirect(BASE_URL . $url . "/major/addnewmajor");
+        }
+
+        if ($major_head != null && $major_head !== '') {
+            $is_go = true;
+        } else {
+            setError("major_head_empty");
+            Ardent::redirect(BASE_URL . $url . "/major/addnewmajor");
+        }
+
+        if ($is_go) {
+            $q = "INSERT INTO $this->tbJurusan VALUES(:id,:major_name,:major_code,:major_head)";
+
+            $this->db->query($q);
+            $this->db->bind("id", $id_jurusan);
+            $this->db->bind("major_name", $major_name);
+            $this->db->bind("major_code", $major_code);
+            $this->db->bind("major_head", $major_head);
+            $this->db->execute();
+            return $this->db->rowCount();
+        }
+
+        return -1;
     }
 
     /**
@@ -237,5 +299,39 @@ class Main_model
         } else {
             return -1;
         }
+    }
+
+    /**
+     * 
+     * getStudents()
+     * 
+     * method ini digunakan untuk mengambil data siswa
+     * 
+     * @return mixed
+     * 
+     */
+    public function getStudents()
+    {
+        $q = "SELECT * FROM $this->tbUser WHERE role_user=:role";
+        $this->db->query($q);
+        $this->db->bind("role", "0");
+        return $this->db->getAllData();
+    }
+
+    /**
+     * 
+     * getDetailStudent()
+     * 
+     * method ini digunakan untuk mengambil data siswa secara spesifik
+     * 
+     * @return mixed
+     * 
+     */
+    public function getDetailStudent($id)
+    {
+        $q = "SELECT * FROM $this->tbUser WHERE id_user=:id";
+        $this->db->query($q);
+        $this->db->bind("id", $id);
+        return $this->db->getData();
     }
 }

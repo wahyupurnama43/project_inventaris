@@ -58,7 +58,10 @@ function setError($err_code)
         "menu_name_empty" => "This field is required.",
         "menu_link_empty" => "This field is required.",
         "menu_icon_empty" => "This field is required.",
-        "menu_access_empty" => "This field is required."
+        "menu_access_empty" => "This field is required.",
+        "major_name_empty" => "This field is required.",
+        "major_code_empty" => "This field is required.",
+        "major_head_empty" => "This field is required.",
     ];
     if (isset($err_code)) {
         if (is_array($err_code)) {

@@ -40,6 +40,12 @@
                     <span><?= $menu['nama_menu'] ?></span></a>
             </li>
         <?php endforeach; ?>
+        <li class="nav-item">
+            <a href="" class="nav-link" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-fw fa-sign-out-alt"></i>
+                <span>Log Out</span>
+            </a>
+        </li>
     <?php else : ?>
         <li class="nav-item">
             <a href="#!" class="nav-link"><span>Nothing Found</span></a>

@@ -37,6 +37,7 @@ class Admin extends Controller
             $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
             $params['menu'] = $this->useModel("Main_model")->getMenu();
             $params['title'] = $_ENV["APP_NAME"] . " - Admin";
+            $params['students'] = count($this->useModel("Main_model")->getStudents());
             $this->useViews(['templates.header', 'admin.index', 'templates.footer'], $params);
         } else {
             Ardent::redirect(BASE_URL . "errorpage/forbidden");
@@ -108,8 +109,8 @@ class Admin extends Controller
         if (isset($_COOKIE['is_login'])) {
             $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
             $params['menu'] = $this->useModel("Main_model")->getMenu();
-            $params['title'] = $_ENV["APP_NAME"] . " - Admin";
             if (!isset($actions) || $actions === '') {
+                $params['title'] = $_ENV["APP_NAME"] . " - Menu";
                 $this->useViews(['templates.header', 'admin.menulists', 'templates.footer'], $params);
             } else {
                 if (isset($actions) && $actions === "addnewmenu") {
@@ -147,7 +148,7 @@ class Admin extends Controller
                             $params['spes_menu'] = $this->useModel("Main_model")->getMenuById($verificator);
                             $this->useViews(["templates.header", "admin.editmenu", "templates.footer"], $params);
                         } else {
-                            if($this->useModel("Main_model")->updateMenu($verificator) > 0) {
+                            if ($this->useModel("Main_model")->updateMenu($verificator) > 0) {
                                 setFlash("Successfully update menu.", "success");
                                 makeNotification("Menu has been updated.");
                                 Ardent::redirect(BASE_URL . $this->url . "/menu");
@@ -161,6 +162,83 @@ class Admin extends Controller
                         setFlash("You entered invalid url for edit a menu.", "danger");
                         makeNotification("Failed to update menu.");
                         Ardent::redirect(BASE_URL . $this->url . "/menu");
+                    }
+                } else {
+                    Ardent::redirect(BASE_URL . "errorpage/notfound");
+                }
+            }
+        } else {
+            Ardent::redirect(BASE_URL . "errorpage/forbidden");
+        }
+    }
+
+    /**
+     * 
+     * student()
+     * 
+     * method ini adalah method untuk mengatur siswa
+     * 
+     */
+    public function student($action = "", $id = '')
+    {
+        if (isset($_COOKIE['is_login'])) {
+            $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
+            $params['menu'] = $this->useModel("Main_model")->getMenu();
+            if (!isset($action) || $action === '') {
+                $params['title'] = $_ENV["APP_NAME"] . " - Students";
+                $params['students'] = $this->useModel("Main_model")->getStudents();
+                $this->useViews(["templates.header", "admin.student", "templates.footer"], $params);
+            } else {
+                if (isset($action) && $action === 'detail') {
+                    if (isset($id) && $id !== '') {
+                        $params['title'] = $_ENV['APP_NAME'] . " - Detail Student";
+                        $params['student'] = $this->useModel("Main_model")->getDetailStudent($id);
+                        $this->useViews(["templates.header", "admin.studentinfo", "templates.footer"], $params);
+                    } else {
+                        setFlash("You searchin for what? No student you selected", "danger");
+                        Ardent::redirect(BASE_URL . $this->url . "/student");
+                    }
+                } else {
+                    Ardent::redirect(BASE_URL . "errorpage/notfound");
+                }
+            }
+        } else {
+            Ardent::redirect(BASE_URL . "errorpage/forbidden");
+        }
+    }
+
+    /**
+     * 
+     * major()
+     * 
+     * method ini untuk mengontrol jurusan
+     * 
+     */
+    public function major($acts = '')
+    {
+        if (isset($_COOKIE['is_login'])) {
+            $params['userdata'] = $this->useModel("Auth_model")->getUserBy("username", $_COOKIE['username']);
+            $params['menu'] = $this->useModel("Main_model")->getMenu();
+            if (!isset($acts) || $acts === '') {
+                $params['title'] = $_ENV["APP_NAME"] . " - Major";
+                $params['jurusan'] = $this->useModel("Main_model")->getJurusanAndKepJur();
+                $this->useViews(["templates.header", "admin.major", "templates.footer"], $params);
+            } else {
+                if (isset($acts) && $acts === 'addnewmajor') {
+                    if (!isset($_POST['addnewmajor'])) {
+                        $params["title"] = $_ENV["APP_NAME"] . " - Create Major";
+                        $params['kepala_jurusan'] = $this->useModel("Main_model")->getKepalaJurusan();
+                        $this->useViews(['templates.header', 'admin.addmajor', 'templates.footer'], $params);
+                        Ardent::unsetSession();
+                    } else {
+                        if ($this->useModel("Main_model")->addNewMajor() > 0) {
+                            setFlash("Successfully added new major.", "success");
+                            makeNotification("New major added.");
+                            Ardent::redirect(BASE_URL . $this->url . "/major");
+                        } else {
+                            setFlash("Failed to add a new menu", "danger");
+                            Ardent::redirect(BASE_URL . $this->url . "/major/addnewmajor");
+                        }
                     }
                 } else {
                     Ardent::redirect(BASE_URL . "errorpage/notfound");
